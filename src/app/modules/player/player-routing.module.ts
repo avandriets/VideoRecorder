@@ -2,11 +2,11 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
 // own resources
-import {PlayerComponent} from './components/player/player.component';
+import {VideoManagerComponent} from './components/video-manager/video-manager.component';
 
 
 const routes: Routes = [
-  {path: '', component: PlayerComponent},
+  {path: '', component: VideoManagerComponent},
   {path: '', redirectTo: '/errors/404'},
 ];
 

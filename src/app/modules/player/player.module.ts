@@ -2,8 +2,10 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 // own resources
-import {PlayerComponent} from './components/player/player.component';
+import {VideoPlayerComponent} from './components/video-player/video-player.component';
 import {PlayerRoutingModule} from './player-routing.module';
+import { RecorderComponent } from './components/recorder/recorder.component';
+import { VideoManagerComponent } from './components/video-manager/video-manager.component';
 
 
 @NgModule({
@@ -11,7 +13,7 @@ import {PlayerRoutingModule} from './player-routing.module';
     CommonModule,
     PlayerRoutingModule
   ],
-  declarations: [PlayerComponent]
+  declarations: [VideoPlayerComponent, RecorderComponent, VideoManagerComponent]
 })
 export class PlayerModule {
 }
