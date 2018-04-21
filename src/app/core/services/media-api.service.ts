@@ -58,4 +58,12 @@ export class MediaApiService {
       );
     }
   }
+
+  getVideoDistribution(): Observable<{name: string, percentages: number}[]> {
+    return Observable.of([{name: 'video-1', percentages: 30}, {name: 'video-2', percentages: 25}, {name: 'video-3', percentages: 45}]);
+  }
+
+  getAverageRate(): Observable<{collectionName: string, rate: number}[]> {
+    return Observable.of([{collectionName: 'collection-1', rate: 30}, {collectionName: 'collection-2', rate: 25}]);
+  }
 }
