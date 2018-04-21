@@ -7,44 +7,9 @@ import {withLatestFrom} from 'rxjs/operators';
 // own resources
 import {RecorderState} from '../../../model/recorder.model';
 import {VideoElement, videoSource} from '../../../model/player.model';
-
-
-
-export class VideoCollectionItem {
-  private _video: VideoElement;
-  private _startTime: number;
-  private _finishTime: number;
-
-  constructor(video: VideoElement, startTime: number, finishTime: number) {
-    this._video = video;
-    this._startTime = startTime;
-    this._finishTime = finishTime;
-  }
-
-  get video(): VideoElement {
-    return this._video;
-  }
-
-  set video(value: VideoElement) {
-    this._video = value;
-  }
-
-  get startTime(): number {
-    return this._startTime;
-  }
-
-  set startTime(value: number) {
-    this._startTime = value;
-  }
-
-  get finishTime(): number {
-    return this._finishTime;
-  }
-
-  set finishTime(value: number) {
-    this._finishTime = value;
-  }
-}
+import {VideoCollectionItem} from '../../../model/model';
+import {MediaApiService} from './media-api.service';
+import {Observable} from 'rxjs/Observable';
 
 
 @Injectable()
@@ -55,12 +20,12 @@ export class VideoManagerService {
 
   currentVideoSet: VideoCollectionItem[] = [];
 
-  constructor() {
+  constructor(private mediaApi: MediaApiService) {
     this.videoStream =
       new BehaviorSubject<{ video: VideoElement, firstStart: boolean }>({video: videoSource[0], firstStart: true});
   }
 
-  startStopRecord() {
+  startRecord() {
     this.currentVideoSet = [];
 
     const recordTimer = TimerObservable.create(0, 1)
@@ -109,6 +74,15 @@ export class VideoManagerService {
       lastElement.finishTime = finishTime;
       this.currentVideoSet.push(lastElement);
     }
+  }
+
+  saveSetToService(setName: string): Observable<{ success: boolean, message: string }> {
+    return this.mediaApi.saveRecording(setName, this.currentVideoSet).map((response: { success: boolean, message: string }) => {
+      if (response.success) {
+        this.currentVideoSet = [];
+      }
+      return response;
+    });
   }
 
 }

@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  useMockData: true,
+  mediaServerURL: 'http://localhost:8084/api/media'
 };

@@ -1,12 +1,22 @@
 <div>
-  <button (click)="onRecStop()">
+  <button (click)="onRecordStartStop()">
     <span *ngIf="(videoManager.getRecordState() | async) === recorderState.Record">Stop</span>
     <span *ngIf="(videoManager.getRecordState() | async) === recorderState.Stop">Rec</span>
   </button>
-  <!--<p>{{videoManager.timer | async}}</p>-->
 </div>
 
-<div>
-  <input placeholder="Name of set" type="text" name="SetName">
-  <button [disabled]="(videoManager.getRecordState() | async) === recorderState.Record">Save</button>
-</div>
+
+<form [formGroup]="form" (ngSubmit)="onSaveSet()">
+  <input placeholder="Name of set" formControlName="setName">
+  <!--TODO add validation if empty record set-->
+  <button type="submit"
+          [disabled]="(videoManager.getRecordState() | async) === recorderState.Record || !form.valid">
+    Save
+  </button>
+</form>
+
+<ul>
+  <li *ngFor="let item of videoManager.currentVideoSet">{{item.video.id}} - {{item.startTime}} - {{item.finishTime}}
+    <button>Play</button>
+  </li>
+</ul>

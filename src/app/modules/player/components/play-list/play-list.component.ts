@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {VideoManagerService} from '../../services/video-manager.service';
+import {Component, OnInit} from '@angular/core';
+import {MediaApiService} from '../../services/media-api.service';
 
 @Component({
   selector: 'app-play-list',
@@ -8,7 +8,8 @@ import {VideoManagerService} from '../../services/video-manager.service';
 })
 export class PlayListComponent implements OnInit {
 
-  constructor(public videoManager: VideoManagerService) { }
+  constructor(public mediaApi: MediaApiService) {
+  }
 
   ngOnInit() {
   }

@@ -1,5 +1,5 @@
 <ul>
-  <li *ngFor="let item of videoManager.currentVideoSet">{{item.video.id}} - {{item.startTime}} - {{item.finishTime}}
+  <li *ngFor="let item of mediaApi.getMediaCollection() | async">{{item.collectionName}}
     <button>Play</button>
   </li>
 </ul>
