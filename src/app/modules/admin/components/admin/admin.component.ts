@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 
+
 // own resources
+import {MediaApiService} from '../../../../core/services/media-api.service';
+import {MediaSet} from '../../../../model/model';
 
 
 @Component({
@@ -10,10 +13,13 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
-  constructor() {
+  constructor(public mediaApi: MediaApiService) {
   }
 
   ngOnInit() {
   }
 
+  onDeleteItem(item: MediaSet) {
+    this.mediaApi.deleteItem(item);
+  }
 }

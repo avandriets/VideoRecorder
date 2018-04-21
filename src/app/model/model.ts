@@ -1,5 +1,6 @@
 import {OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import {v4 as uuid} from 'uuid';
 
 // own resources
 import {VideoElement} from './player.model';
@@ -42,12 +43,16 @@ export class VideoCollectionItem {
 }
 
 export class MediaSet {
+  id: string;
   collectionName: string;
   recordings: VideoCollectionItem[] = [];
 
-  constructor(collectionName: string, recordings: VideoCollectionItem[]) {
-    this.collectionName = collectionName;
-    this.recordings = recordings;
+  constructor(mediaObj?: {collectionName: string, recordings: VideoCollectionItem[]}) {
+    if (mediaObj) {
+      this.collectionName = mediaObj.collectionName;
+      this.recordings = mediaObj.recordings;
+      this.id = uuid();
+    }
   }
 
   getVideoByStartTime(startTime: number): VideoCollectionItem {
@@ -56,7 +61,7 @@ export class MediaSet {
 
   getFinishTime(): number {
     if (this.recordings.length > 0) {
-      return this.recordings[this.recordings.length -1].finishTime;
+      return this.recordings[this.recordings.length - 1].finishTime;
     } else {
       return -1;
     }

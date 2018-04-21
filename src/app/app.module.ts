@@ -6,6 +6,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 // own resources
 import {AppComponent} from './app.component';
 import {SharedModule} from './modules/shared/shared.module';
+import {CoreModule} from './core/core.module';
+import {MediaApiService} from './core/services/media-api.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 const routes: Routes = [
@@ -21,9 +24,10 @@ const routes: Routes = [
     AppComponent
   ],
   imports: [
-    BrowserModule, RouterModule.forRoot(routes), SharedModule, FormsModule, ReactiveFormsModule
+    BrowserModule, RouterModule.forRoot(routes), SharedModule, FormsModule, ReactiveFormsModule,
+    CoreModule, HttpClientModule
   ],
-  providers: [],
+  providers: [MediaApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

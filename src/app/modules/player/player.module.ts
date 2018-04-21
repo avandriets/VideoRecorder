@@ -10,7 +10,7 @@ import {RecorderComponent} from './components/recorder/recorder.component';
 import {VideoManagerComponent} from './components/video-manager/video-manager.component';
 import {PlayListComponent} from './components/play-list/play-list.component';
 import {VideoManagerService} from './services/video-manager.service';
-import {MediaApiService} from './services/media-api.service';
+import {CoreModule} from '../../core/core.module';
 
 
 @NgModule({
@@ -19,10 +19,11 @@ import {MediaApiService} from './services/media-api.service';
     PlayerRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CoreModule
   ],
   declarations: [VideoPlayerComponent, RecorderComponent, VideoManagerComponent, PlayListComponent],
-  providers: [VideoManagerService, MediaApiService]
+  providers: [VideoManagerService]
 })
 export class PlayerModule {
 }

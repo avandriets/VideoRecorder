@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import 'rxjs/add/observable/of';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/mergeMap';
 
 
 // own resources
-import {MediaSet, VideoCollectionItem} from '../../../model/model';
+import {MediaSet, VideoCollectionItem} from '../../model/model';
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class MediaApiService {
   saveRecording(setName: string, videoSet: VideoCollectionItem[]): Observable<{ success: boolean, message: string }> {
     if (environment.useMockData) {
       const mediaCollection: MediaSet[] = this.recordingsCollection.getValue();
-      mediaCollection.push(new MediaSet(setName, videoSet));
+      mediaCollection.push(new MediaSet({collectionName: setName, recordings: videoSet}));
       this.recordingsCollection.next(mediaCollection);
       return Observable.of({success: true, message: 'Ok'});
     } else {
@@ -36,5 +37,25 @@ export class MediaApiService {
       this.http.get<MediaSet[]>(url).map((items: MediaSet[]) => this.recordingsCollection.next(items));
     }
     return this.recordingsCollection;
+  }
+
+  deleteItem(item: MediaSet): Observable<{ success: boolean, message: string }> {
+    if (environment.useMockData) {
+      const mediaCollection: MediaSet[] = this.recordingsCollection.getValue();
+      mediaCollection.splice(mediaCollection.indexOf(item), 1);
+      this.recordingsCollection.next(mediaCollection);
+      return Observable.of({success: true, message: 'Ok'});
+    } else {
+      const url = `${environment.mediaServerURL}/addRecording/${item.id}`;
+      return this.http.delete<{ success: boolean, message: string }>(url).flatMap(
+        (response) => {
+          return this.getMediaCollection().map(
+            (getResp) => {
+              return response;
+            }
+          );
+        }
+      );
+    }
   }
 }

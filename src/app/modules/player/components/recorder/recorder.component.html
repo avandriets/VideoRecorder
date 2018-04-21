@@ -10,14 +10,15 @@
 <form [formGroup]="form" (ngSubmit)="onSaveSet()">
   <input placeholder="Name of set" formControlName="setName">
   <!--TODO add validation if empty record set-->
-  <button type="submit"
+  <button *ngIf="videoManager.currentVideoSet.length > 0"
+    type="submit"
           [disabled]="(videoManager.getRecordStateStream() | async) === recorderState.Record || !form.valid">
     Save
   </button>
 </form>
 
-<ul>
-  <li *ngFor="let item of videoManager.currentVideoSet">{{item.video.id}} - {{item.startTime}} - {{item.finishTime}}
-    <button>Play</button>
-  </li>
-</ul>
+<!--<ul>-->
+  <!--<li *ngFor="let item of videoManager.currentVideoSet">{{item.video.id}} - {{item.startTime}} - {{item.finishTime}}-->
+    <!--<button>Play</button>-->
+  <!--</li>-->
+<!--</ul>-->

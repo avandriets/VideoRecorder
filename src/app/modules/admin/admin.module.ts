@@ -2,9 +2,12 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 
+
 // own resources
 import {AdminComponent} from './components/admin/admin.component';
 import {SharedModule} from '../shared/shared.module';
+import {CoreModule} from '../../core/core.module';
+import {HttpClientModule} from '@angular/common/http';
 
 
 const routes: Routes = [
@@ -17,7 +20,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    CoreModule,
+    HttpClientModule
   ],
   declarations: [AdminComponent]
 })

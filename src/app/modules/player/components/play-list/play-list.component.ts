@@ -3,7 +3,7 @@ import {Subject} from 'rxjs/Subject';
 import {TimerObservable} from 'rxjs/observable/TimerObservable';
 
 // own resources
-import {MediaApiService} from '../../services/media-api.service';
+import {MediaApiService} from '../../../../core/services/media-api.service';
 import {MediaSet, VideoCollectionItem} from '../../../../model/model';
 import {VideoManagerService} from '../../services/video-manager.service';
 import {RecorderState} from '../../../../model/recorder.model';

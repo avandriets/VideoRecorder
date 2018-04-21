@@ -10,7 +10,7 @@ import {Subject} from 'rxjs/Subject';
 import {RecorderState} from '../../../model/recorder.model';
 import {PlayerState, VideoElement, videoSource} from '../../../model/player.model';
 import {VideoCollectionItem} from '../../../model/model';
-import {MediaApiService} from './media-api.service';
+import {MediaApiService} from '../../../core/services/media-api.service';
 
 
 @Injectable()
