@@ -1,27 +1,31 @@
-# TESTISSUE
+# My Test Issue
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+## Requirements
 
-## Development server
+- [Node](https://nodejs.org) v6 or later
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Install project
 
-## Code scaffolding
+*clone project from github and go to project folder*
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+git clone https://github.com/avandriets/VideoRecorder.git test_issue
+cd test_issue
+```
 
-## Build
+next install packages
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+```bash
+npm install -g @angular/cli
+npm i
+```
 
-## Running unit tests
+## To Run Project
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+There are two variants to run the application:
 
-## Running end-to-end tests
+### Use mock data
+Run `ng serve` or `npm run start-use-mock-data` for a dev server. Navigate to `http://localhost:4200/`. The app will use mock data after refresh brouser you lose you saved records.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Use service to manage your records
+Run `ng serve --environment=dev` or `npm run start-use-dev-server` for a dev server. Navigate to `http://localhost:4200/`. The app will use dev server with REST API to save your data.
