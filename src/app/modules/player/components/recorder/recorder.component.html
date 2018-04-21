@@ -1,3 +1,12 @@
-<p>
-  recorder works!
-</p>
+<div>
+  <button (click)="onRecStop()">
+    <span *ngIf="(videoManager.getRecordState() | async) === recorderState.Record">Stop</span>
+    <span *ngIf="(videoManager.getRecordState() | async) === recorderState.Stop">Rec</span>
+  </button>
+  <!--<p>{{videoManager.timer | async}}</p>-->
+</div>
+
+<div>
+  <input placeholder="Name of set" type="text" name="SetName">
+  <button [disabled]="(videoManager.getRecordState() | async) === recorderState.Record">Save</button>
+</div>

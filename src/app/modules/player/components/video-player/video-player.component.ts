@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 // own resources
-import {videoSource, VideoStorage} from '../../../../model/player.model';
+import {videoSource, VideoElement} from '../../../../model/player.model';
+import {VideoManagerService} from '../../services/video-manager.service';
 
 
 @Component({
@@ -13,25 +13,23 @@ import {videoSource, VideoStorage} from '../../../../model/player.model';
 export class VideoPlayerComponent implements OnInit {
 
   @ViewChild('videoElement') videoElement: ElementRef = null;
-  behaviourSubject: BehaviorSubject<{video: VideoStorage, firstStart: boolean}> = null;
 
-  constructor() {
-    this.behaviourSubject = new BehaviorSubject<{video: VideoStorage, firstStart: boolean}>({video: videoSource[0], firstStart: true});
+  constructor(public videoManager: VideoManagerService) {
   }
 
   ngOnInit() {
   }
 
   onPlayVideo(videoId: number) {
-    const video = videoSource.find((item: VideoStorage) => item.id === videoId);
+    const video = videoSource.find((item: VideoElement) => item.id === videoId);
 
     if (video) {
-      this.behaviourSubject.next({video: video, firstStart: false});
+      this.videoManager.getVideoStream().next({video: video, firstStart: false});
     }
   }
 
   onLoadVideo() {
-    if (!this.behaviourSubject.getValue().firstStart) {
+    if (!this.videoManager.getVideoStream().getValue().firstStart) {
       this.videoElement.nativeElement.play();
     }
   }

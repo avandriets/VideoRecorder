@@ -1,30 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import {Subject} from 'rxjs/Subject';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+
+
+// own resources
+import {VideoManagerService} from '../../services/video-manager.service';
+import {RecorderState} from '../../../../model/recorder.model';
+
 
 @Component({
   selector: 'app-recorder',
   templateUrl: './recorder.component.html',
   styleUrls: ['./recorder.component.css']
 })
-export class RecorderComponent implements OnInit {
+export class RecorderComponent implements OnInit, OnDestroy {
 
-  timer: Observable<number> = new BehaviorSubject<number>(0);
+  recorderState = RecorderState;
   onDestroy$: Subject<any> = new Subject<any>();
 
-  constructor() { }
+  constructor(public videoManager: VideoManagerService) {
+    this.videoManager.getRecordState()
+      .takeUntil(this.onDestroy$)
+      .subscribe((stateOfRecorder: RecorderState) => {
+          if (stateOfRecorder === RecorderState.Record) {
+            this.videoManager.startStopRecord();
+          }
+        }
+      );
+  }
 
   ngOnInit() {
   }
 
   onRecStop() {
-    // this.timer = TimerObservable.create(0, 1)
-    //   .takeUntil(this.onDestroy$).map((value) => {
-    //       console.log('time value: ', value);
-    //       return value;
-    //     }
-    //   );
+    this.videoManager.getRecordState()
+      .next(this.videoManager.getRecordState().getValue() === RecorderState.Record ? RecorderState.Stop : RecorderState.Record);
+  }
+
+  ngOnDestroy(): void {
+    this.videoManager.getRecordState().next(RecorderState.Stop);
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
 }
