@@ -1,4 +1,5 @@
 export enum RecorderState {
   Record,
-  Stop
+  Stop,
+  Play
 }

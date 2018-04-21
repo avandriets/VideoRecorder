@@ -2,21 +2,23 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {TimerObservable} from 'rxjs/observable/TimerObservable';
 import {withLatestFrom} from 'rxjs/operators';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
 
 
 // own resources
 import {RecorderState} from '../../../model/recorder.model';
-import {VideoElement, videoSource} from '../../../model/player.model';
+import {PlayerState, VideoElement, videoSource} from '../../../model/player.model';
 import {VideoCollectionItem} from '../../../model/model';
 import {MediaApiService} from './media-api.service';
-import {Observable} from 'rxjs/Observable';
 
 
 @Injectable()
 export class VideoManagerService {
 
-  private recorderState: BehaviorSubject<RecorderState> = new BehaviorSubject<RecorderState>(RecorderState.Stop);
+  private recorderStateStream: BehaviorSubject<RecorderState> = new BehaviorSubject<RecorderState>(RecorderState.Stop);
   private videoStream: BehaviorSubject<{ video: VideoElement, firstStart: boolean }> = null;
+  private playerManagementStream: Subject<PlayerState> = new Subject<PlayerState>();
 
   currentVideoSet: VideoCollectionItem[] = [];
 
@@ -25,38 +27,46 @@ export class VideoManagerService {
       new BehaviorSubject<{ video: VideoElement, firstStart: boolean }>({video: videoSource[0], firstStart: true});
   }
 
+  initVideoStream() {
+    const video = this.videoStream.getValue().video;
+    this.videoStream =
+      new BehaviorSubject<{ video: VideoElement, firstStart: boolean }>({video: video, firstStart: true});
+  }
+
   startRecord() {
     this.currentVideoSet = [];
 
     const recordTimer = TimerObservable.create(0, 1)
-      .takeUntil(this.recorderState.filter((state: RecorderState) => state === RecorderState.Stop));
+      .takeUntil(this.recorderStateStream.filter((state: RecorderState) => state === RecorderState.Stop));
 
     this.videoStream =
       new BehaviorSubject<{ video: VideoElement, firstStart: boolean }>({video: videoSource[0], firstStart: true});
 
     this.videoStream.pipe(withLatestFrom(recordTimer))
-      .takeUntil(this.recorderState.filter((state: RecorderState) => state === RecorderState.Stop))
-      .subscribe(
-        (streamData: any[]) => {
-          this.addVideoExtract(streamData[0], streamData[1]);
+      .takeUntil(this.recorderStateStream.filter((state: RecorderState) => state === RecorderState.Stop))
+      .subscribe((streamData: [{video: VideoElement, firstStart: boolean}, number]) => {
+          this.addVideoExtract(streamData[0].video, streamData[1]);
         }
       );
 
-    const finishRecording = this.recorderState.pipe(withLatestFrom(recordTimer))
-      .subscribe(
-        (streamData: any[]) => {
+    const finishRecording = this.recorderStateStream.pipe(withLatestFrom(recordTimer))
+      .subscribe((streamData: any[]) => {
           this.addStopToVideoExtract(streamData[1]);
           finishRecording.unsubscribe();
         }
       );
   }
 
-  getRecordState(): BehaviorSubject<RecorderState> {
-    return this.recorderState;
+  getRecordStateStream(): BehaviorSubject<RecorderState> {
+    return this.recorderStateStream;
   }
 
   getVideoStream(): BehaviorSubject<{ video: VideoElement, firstStart: boolean }> {
     return this.videoStream;
+  }
+
+  getPlayerManagementStream(): Subject<PlayerState> {
+    return this.playerManagementStream;
   }
 
   addVideoExtract(videoItem: VideoElement, startTime: number) {

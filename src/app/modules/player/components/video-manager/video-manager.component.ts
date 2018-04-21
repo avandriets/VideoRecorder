@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+// own resources
+import {VideoManagerService} from '../../services/video-manager.service';
+
 @Component({
   selector: 'app-player-view',
   templateUrl: './video-manager.component.html',
@@ -7,9 +10,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VideoManagerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private mediaManager: VideoManagerService) { }
 
   ngOnInit() {
+    this.mediaManager.initVideoStream();
   }
 
 }

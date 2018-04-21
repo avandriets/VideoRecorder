@@ -1,7 +1,8 @@
 <div>
-  <button (click)="onRecordStartStop()">
-    <span *ngIf="(videoManager.getRecordState() | async) === recorderState.Record">Stop</span>
-    <span *ngIf="(videoManager.getRecordState() | async) === recorderState.Stop">Rec</span>
+  <button [disabled]="(videoManager.getRecordStateStream() | async) === recorderState.Play"
+          (click)="onRecordStartStop()">
+    <span *ngIf="(videoManager.getRecordStateStream() | async) === recorderState.Record">Stop</span>
+    <span *ngIf="(videoManager.getRecordStateStream() | async) === recorderState.Stop || (videoManager.getRecordStateStream() | async) === recorderState.Play">Rec</span>
   </button>
 </div>
 
@@ -10,7 +11,7 @@
   <input placeholder="Name of set" formControlName="setName">
   <!--TODO add validation if empty record set-->
   <button type="submit"
-          [disabled]="(videoManager.getRecordState() | async) === recorderState.Record || !form.valid">
+          [disabled]="(videoManager.getRecordStateStream() | async) === recorderState.Record || !form.valid">
     Save
   </button>
 </form>

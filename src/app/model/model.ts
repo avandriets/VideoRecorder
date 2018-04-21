@@ -1,4 +1,9 @@
+import {OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs/Subject';
+
+// own resources
 import {VideoElement} from './player.model';
+
 
 export class VideoCollectionItem {
   private _video: VideoElement;
@@ -34,4 +39,36 @@ export class VideoCollectionItem {
   set finishTime(value: number) {
     this._finishTime = value;
   }
+}
+
+export class MediaSet {
+  collectionName: string;
+  recordings: VideoCollectionItem[] = [];
+
+  constructor(collectionName: string, recordings: VideoCollectionItem[]) {
+    this.collectionName = collectionName;
+    this.recordings = recordings;
+  }
+
+  getVideoByStartTime(startTime: number): VideoCollectionItem {
+    return this.recordings.find((item: VideoCollectionItem) => item.startTime === startTime);
+  }
+
+  getFinishTime(): number {
+    if (this.recordings.length > 0) {
+      return this.recordings[this.recordings.length -1].finishTime;
+    } else {
+      return -1;
+    }
+  }
+}
+
+export class PlayerForm implements OnDestroy {
+  onDestroy$: Subject<any> = new Subject<any>();
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
 }

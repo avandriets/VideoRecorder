@@ -3,22 +3,11 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {environment} from '../../../../environments/environment';
 import 'rxjs/add/observable/of';
-
-
-// own resources
-import {VideoCollectionItem} from '../../../model/model';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
-export class MediaSet {
-  collectionName: string;
-  recordings: VideoCollectionItem[] = [];
-
-  constructor(collectionName: string, recordings: VideoCollectionItem[]) {
-    this.collectionName = collectionName;
-    this.recordings = recordings;
-  }
-}
+// own resources
+import {MediaSet, VideoCollectionItem} from '../../../model/model';
 
 
 @Injectable()

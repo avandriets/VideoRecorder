@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // own resources
 import {VideoManagerService} from '../../services/video-manager.service';
 import {RecorderState} from '../../../../model/recorder.model';
+import {PlayerState} from '../../../../model/player.model';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class RecorderComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   constructor(public videoManager: VideoManagerService, private fb: FormBuilder) {
-    this.videoManager.getRecordState()
+    this.videoManager.getRecordStateStream()
       .takeUntil(this.onDestroy$)
       .subscribe((stateOfRecorder: RecorderState) => {
           if (stateOfRecorder === RecorderState.Record) {
@@ -41,12 +42,13 @@ export class RecorderComponent implements OnInit, OnDestroy {
   }
 
   onRecordStartStop() {
-    this.videoManager.getRecordState()
-      .next(this.videoManager.getRecordState().getValue() === RecorderState.Record ? RecorderState.Stop : RecorderState.Record);
+    this.videoManager.getPlayerManagementStream().next(PlayerState.Pause);
+    this.videoManager.getRecordStateStream()
+      .next(this.videoManager.getRecordStateStream().getValue() === RecorderState.Record ? RecorderState.Stop : RecorderState.Record);
   }
 
   ngOnDestroy(): void {
-    this.videoManager.getRecordState().next(RecorderState.Stop);
+    this.videoManager.getRecordStateStream().next(RecorderState.Stop);
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }
@@ -54,9 +56,9 @@ export class RecorderComponent implements OnInit, OnDestroy {
   onSaveSet() {
     this.videoManager.saveSetToService(this.form.value['setName'])
       .subscribe((response: { success: boolean, message: string }) => {
-          console.log(response);
+          this.form.patchValue({setName: ''});
         }, error => {
-        console.error('Cannot save data', error);
+          console.error('Cannot save data', error);
         }
       );
   }
