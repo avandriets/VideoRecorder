@@ -1,4 +1,4 @@
-# My Video recorder
+# My Video Recorder
 
 ## Requirements
 
