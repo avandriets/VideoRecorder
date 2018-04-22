@@ -25,7 +25,7 @@ npm i
 There are two variants to run the application:
 
 ### Use mock data
-Run `ng serve` or `npm run start-use-mock-data` for a dev server. Navigate to `http://localhost:4200/`. The app will use mock data after refresh brouser you lose you saved records.
+Run `ng serve --environment=mock` or `npm run start-use-mock-data` for a dev server. Navigate to `http://localhost:4200/`. The app will use mock data after refresh brouser you lose you saved records.
 
 ### Use service to manage your records
 Run `ng serve --environment=dev` or `npm run start-use-dev-server` for a dev server. Navigate to `http://localhost:4200/`. The app will use dev server with REST API to save your data.
