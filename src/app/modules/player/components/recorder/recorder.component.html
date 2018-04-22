@@ -1,4 +1,4 @@
-<div>
+<div class="btnblockWrapper">
   <button [disabled]="(videoManager.getRecordStateStream() | async) === recorderState.Play"
           (click)="onRecordStartStop()">
     <span *ngIf="(videoManager.getRecordStateStream() | async) === recorderState.Record">Stop</span>

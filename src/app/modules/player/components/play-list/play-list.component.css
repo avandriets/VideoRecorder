@@ -1,0 +1,16 @@
+ul{
+  list-style: none;
+  padding-left: 0;
+}
+li{
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+span{
+  flex: 1;
+}
+button{
+  width: 160px;
+  margin-left: 10px;
+}

@@ -1,25 +1,28 @@
-<h2>Admin Page</h2>
+<div class="main">
+  <h2>Admin Page</h2>
 
-<h3>Number of recordings saved - {{(mediaApi.getMediaCollection() | async).length}}</h3>
-<br>
+  <h3>Number of recordings saved - {{(mediaApi.getMediaCollection() | async).length}}</h3>
+  <br>
 
-<h3>Distribution of various videos</h3>
-<ul>
-  <li *ngFor="let item of mediaApi.getVideoDistribution() | async">
-    {{item.name}} - {{item.percentages}}%
-  </li>
-</ul>
+  <h3>Distribution of various videos</h3>
+  <ul>
+    <li *ngFor="let item of mediaApi.getVideoDistribution() | async">
+      {{item.name}} - {{item.percentages}}%
+    </li>
+  </ul>
 
-<h3>Average rate of all saved recordings</h3>
-<ul>
-  <li *ngFor="let item of mediaApi.getAverageRate() | async">
-    {{item.collectionName}} - {{item.rate}}%
-  </li>
-</ul>
+  <h3>Average rate of all saved recordings</h3>
+  <ul>
+    <li *ngFor="let item of mediaApi.getAverageRate() | async">
+      {{item.collectionName}} - {{item.rate}}%
+    </li>
+  </ul>
 
-<h3>List of all recordings</h3>
-<ul>
-  <li *ngFor="let item of mediaApi.getMediaCollection() | async">{{item.collectionName}}
-    <button (click)="onDeleteItem(item)">Delete</button>
-  </li>
-</ul>
+  <h3>List of all recordings</h3>
+  <ul>
+    <li *ngFor="let item of mediaApi.getMediaCollection() | async">
+      <span>{{item.collectionName}}</span>
+      <button (click)="onDeleteItem(item)">Delete</button>
+    </li>
+  </ul>
+</div>
