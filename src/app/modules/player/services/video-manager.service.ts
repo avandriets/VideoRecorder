@@ -72,7 +72,7 @@ export class VideoManagerService {
   addVideoExtract(videoItem: VideoElement, startTime: number) {
     if (this.currentVideoSet.length > 0) {
       const lastElement: VideoCollectionItem = this.currentVideoSet.pop();
-      lastElement.finishTime = startTime;
+      lastElement.setFinishTime(startTime);
       this.currentVideoSet.push(lastElement);
     }
     this.currentVideoSet.push(new VideoCollectionItem(videoItem, startTime, 0));
@@ -81,7 +81,7 @@ export class VideoManagerService {
   addStopToVideoExtract(finishTime: number) {
     if (this.currentVideoSet.length > 0) {
       const lastElement: VideoCollectionItem = this.currentVideoSet.pop();
-      lastElement.finishTime = finishTime;
+      lastElement.setFinishTime(finishTime);
       this.currentVideoSet.push(lastElement);
     }
   }

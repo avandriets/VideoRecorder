@@ -7,61 +7,68 @@ import {VideoElement} from './player.model';
 
 
 export class VideoCollectionItem {
-  private _video: VideoElement;
-  private _startTime: number;
-  private _finishTime: number;
+  private video: VideoElement;
+  private startTime: number;
+  private finishTime: number;
 
   constructor(video: VideoElement, startTime: number, finishTime: number) {
-    this._video = video;
-    this._startTime = startTime;
-    this._finishTime = finishTime;
+    this.video = video;
+    this.startTime = startTime;
+    this.finishTime = finishTime;
   }
 
-  get video(): VideoElement {
-    return this._video;
+  getVideo(): VideoElement {
+    return this.video;
   }
 
-  set video(value: VideoElement) {
-    this._video = value;
+  setVideo(value: VideoElement) {
+    this.video = value;
   }
 
-  get startTime(): number {
-    return this._startTime;
+  getStartTime(): number {
+    return this.startTime;
   }
 
-  set startTime(value: number) {
-    this._startTime = value;
+  setStartTime(value: number) {
+    this.startTime = value;
   }
 
-  get finishTime(): number {
-    return this._finishTime;
+  getFinishTime(): number {
+    return this.finishTime;
   }
 
-  set finishTime(value: number) {
-    this._finishTime = value;
+  setFinishTime(value: number) {
+    this.finishTime = value;
   }
 }
 
 export class MediaSet {
-  id: string;
+  id: number;
   collectionName: string;
   recordings: VideoCollectionItem[] = [];
 
-  constructor(mediaObj?: {collectionName: string, recordings: VideoCollectionItem[]}) {
+  constructor(mediaObj?: { id?: number, collectionName: string, recordings: VideoCollectionItem[] }) {
     if (mediaObj) {
       this.collectionName = mediaObj.collectionName;
-      this.recordings = mediaObj.recordings;
-      this.id = uuid();
+      this.recordings = mediaObj.recordings.map((item: any) => {
+          return new VideoCollectionItem(item.video, item.startTime, item.finishTime);
+        }
+      );
+      if (mediaObj.id) {
+        this.id = mediaObj.id;
+      } else {
+        this.id = -1;
+      }
     }
   }
 
   getVideoByStartTime(startTime: number): VideoCollectionItem {
-    return this.recordings.find((item: VideoCollectionItem) => item.startTime === startTime);
+    return this.recordings.find((item: VideoCollectionItem) => item.getStartTime() === startTime);
   }
 
   getFinishTime(): number {
     if (this.recordings.length > 0) {
-      return this.recordings[this.recordings.length - 1].finishTime;
+      return this.recordings[this.recordings.length - 1].getFinishTime();
     } else {
       return -1;
     }

@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start-use-mock-data": "ng serve",
+    "start-use-mock-data": "ng serve --environment=mock",
     "start-use-dev-server": "ng serve --environment=dev",
     "build": "ng build --prod",
     "test": "ng test",

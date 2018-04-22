@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {TimerObservable} from 'rxjs/observable/TimerObservable';
+import {Observable} from 'rxjs/Observable';
 
 // own resources
 import {MediaApiService} from '../../../../core/services/media-api.service';
@@ -18,11 +19,18 @@ import {PlayerState} from '../../../../model/player.model';
 export class PlayListComponent implements OnInit, OnDestroy {
 
   onDestroy$: Subject<any> = new Subject<any>();
+  recordsList: Observable<MediaSet[]> = new Observable<MediaSet[]>();
 
   constructor(public mediaApi: MediaApiService, private videoManager: VideoManagerService) {
   }
 
   ngOnInit() {
+    this.recordsList = this.mediaApi.getMediaCollection();
+    this.mediaApi.dataChanging.subscribe(
+      (items) => {
+        this.recordsList = this.mediaApi.getMediaCollection();
+      }
+    );
   }
 
   onPlayRecording(item: MediaSet) {
@@ -33,7 +41,7 @@ export class PlayListComponent implements OnInit, OnDestroy {
         value => {
           const video: VideoCollectionItem = item.getVideoByStartTime(value);
           if (video) {
-            this.videoManager.getVideoStream().next({video: video.video, firstStart: false});
+            this.videoManager.getVideoStream().next({video: video.getVideo(), firstStart: false});
           }
 
           if (value === item.getFinishTime()) {

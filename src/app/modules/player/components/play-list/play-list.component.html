@@ -1,5 +1,5 @@
 <ul>
-  <li *ngFor="let item of mediaApi.getMediaCollection() | async">{{item.collectionName}}
+  <li *ngFor="let item of recordsList | async">{{item.collectionName}}
     <button (click)="onPlayRecording(item)">Play</button>
   </li>
 </ul>

@@ -10,6 +10,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {VideoManagerService} from '../../services/video-manager.service';
 import {RecorderState} from '../../../../model/recorder.model';
 import {PlayerState} from '../../../../model/player.model';
+import {MediaApiService} from '../../../../core/services/media-api.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class RecorderComponent implements OnInit, OnDestroy {
   onDestroy$: Subject<any> = new Subject<any>();
   form: FormGroup;
 
-  constructor(public videoManager: VideoManagerService, private fb: FormBuilder) {
+  constructor(public videoManager: VideoManagerService, private fb: FormBuilder, private mediaApi: MediaApiService) {
     this.videoManager.getRecordStateStream()
       .takeUntil(this.onDestroy$)
       .subscribe((stateOfRecorder: RecorderState) => {
@@ -57,6 +58,7 @@ export class RecorderComponent implements OnInit, OnDestroy {
     this.videoManager.saveSetToService(this.form.value['setName'])
       .subscribe((response: { success: boolean, message: string }) => {
           this.form.patchValue({setName: ''});
+          this.mediaApi.dataChanging.next(true);
         }, error => {
           console.error('Cannot save data', error);
         }

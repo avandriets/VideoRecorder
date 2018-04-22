@@ -1,6 +1,6 @@
 <h2>Admin Page</h2>
 
-<h3>Number of recordings saved - {{(mediaApi.getMediaCollection() | async).length}}</h3>
+<h3>Number of recordings saved - {{(mediaApi.recordingsCollection | async).length}}</h3>
 <br>
 
 <h3>Distribution of various videos</h3>
@@ -19,7 +19,7 @@
 
 <h3>List of all recordings</h3>
 <ul>
-  <li *ngFor="let item of mediaApi.getMediaCollection() | async">{{item.collectionName}}
+  <li *ngFor="let item of recordsList | async">{{item.collectionName}}
     <button (click)="onDeleteItem(item)">Delete</button>
   </li>
 </ul>

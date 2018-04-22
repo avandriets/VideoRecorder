@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 
 // own resources
 import {videoSource, VideoElement, PlayerState} from '../../../../model/player.model';
@@ -42,4 +42,11 @@ export class VideoPlayerComponent extends PlayerForm implements OnInit {
     }
   }
 
+  @HostListener('document:keyup', ['$event'])
+  handleKeyboardEvent(event) {
+    // TODO exclude input and prevent paly when actions
+    if (event.key === '1' || event.key === '2' || event.key === '3') {
+      this.onPlayVideo(+event.key);
+    }
+  }
 }
