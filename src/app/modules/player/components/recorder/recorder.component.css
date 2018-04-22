@@ -1,0 +1,24 @@
+.btnblockWrapper{
+  margin-bottom: 20px;
+}
+.btnblockWrapper button{
+
+  width: 100%;
+  padding: 10px;
+  display: block;
+  background: #2962ff;
+  color: white;
+}
+form{
+  display: flex;
+  margin-bottom: 20px;
+}
+form input{
+  flex: 1;
+  padding: 10px;
+
+}
+form button{
+  width: 160px;
+  margin-left: 10px;
+}

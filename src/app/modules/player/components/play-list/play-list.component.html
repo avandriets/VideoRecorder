@@ -1,5 +1,6 @@
 <ul>
-  <li *ngFor="let item of recordsList | async">{{item.collectionName}}
+  <li *ngFor="let item of recordsList | async">
+    <span>{{item.collectionName}}</span>
     <button (click)="onPlayRecording(item)">Play</button>
   </li>
 </ul>

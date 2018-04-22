@@ -1,8 +1,8 @@
-<div>
-  <video class="videoSize" #videoElement [src]="(videoManager.getVideoStream() | async).video.url" (loadeddata)="onLoadVideo()"></video>
+<div class="videoWrapper">
+  <video #videoElement [src]="(videoManager.getVideoStream() | async).video.url" (loadeddata)="onLoadVideo()"></video>
 </div>
 
-<div>
+<div class="btnWrapper">
   <button (click)="onPlayVideo(1)">1</button>
   <button (click)="onPlayVideo(2)">2</button>
   <button (click)="onPlayVideo(3)">3</button>
